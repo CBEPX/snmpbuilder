@@ -60,7 +60,7 @@ function clickTree(oid, idx, viewtype, column_names)
 			switch (json.value.ret)
 			{
 				case 0: //full information
-					// oidview.update(['Oid/Name','Type','Value'],[json.value.row],{tr: onClickOid});
+					//oidview.update(['Oid/Name','Type','Value'],[json.value.row],{tr: onClickOid});
 					oidview.update(column_names, [json.value.row], {tr: onClickOid});
 					break;
 				case 1: // table
@@ -147,7 +147,10 @@ function onClickOid(e)
 {
 	var row = this.data[0];
 	var item = convertOid(row[0],row[1]);
-	if (item)
+
+	console.log(row);
+	console.log(item);
+	//if (item)
 	{
 		itemlist.appendData(item);
 		Event.element(e).setStyle('background-color: #ACCEDE');
@@ -326,10 +329,28 @@ function onSaveItems(e)
 
 	var server_port = server_ip.match(/\d+$/); //FIXME?
 	if (!server_port) server_port = 161;
-	
+
+	// DEBUG
+	//console.log (server_ip);
+	//console.log (templateid);
+	//console.log (snmp_version);
+	//console.log (community);
+	//console.log (history);
+	//console.log (trends);	
+	//console.log (delay);
+	//console.log (trends);		
+	//console.log (graph_create);
+	//console.log (graph_name);
+	//console.log (graph_width);
+	//console.log (graph_height);
+	//console.log (graph_type);
+	//console.log (graph_func);
+	//console.log (draw_type);
+	//console.log (yaxisside);						
+
 	if (itemlist.data.size() === 0)
 		return;
-	json = itemlist.data.toJSON();
+	json = JSON.stringify(itemlist.data, null);
 	var get_oid_url = 'snmp_builder.php?save=1&output=json';
 	new Ajax.Request(get_oid_url, {
 		method: 'post',

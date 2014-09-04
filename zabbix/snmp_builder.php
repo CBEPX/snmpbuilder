@@ -20,8 +20,7 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 // This is distributed under Free-BSD licence.
-?>
-<?php
+
 require_once dirname(__FILE__).'/include/config.inc.php';
 require_once dirname(__FILE__).'/include/js.inc.php';
 require_once dirname(__FILE__).'/include/forms.inc.php';
@@ -29,18 +28,18 @@ require_once dirname(__FILE__).'/include/html.inc.php';
 require_once dirname(__FILE__).'/include/items.inc.php';
 require_once dirname(__FILE__).'/include/graphs.inc.php';
 
+//error_reporting(E_ALL);
+//ini_set('display_errors', '1');
+
 $page['title'] = _('SNMP Builder');
 $page['file'] = 'snmp_builder.php';
-$page['scripts'] = array('DynTable.js', 'snmp_builder.js', 'jquery.js', 'jquery.cookie.js', 'jquery.jstree.js');
+$page['scripts'] = array('DynTable.js', 'jquery-ui.js', 'snmp_builder.js', 'jquery.cookie.js', 'jquery.jstree.js');
 $page['hist_arg'] = array();
 $page['type'] = detect_page_type(PAGE_TYPE_HTML);
 
 require_once dirname(__FILE__).'/include/page_header.php';
-?>
-<?php
-// $left_widget_width = '40%'; // was'300px'
-$left_widget_width = '300px';
-// $right_widget_width = '60%'; // was '800px'
+
+$left_widget_width = '500px';
 $right_widget_width = '800px';
 //$mibs_dir = dirname(__FILE__).'/snmp_builder/mibs';
 $mibs_dir = '/usr/share/snmp/mibs';
@@ -49,42 +48,42 @@ ini_set("upload_tmp_dir", "/tmp");
 
 //---------------------------------- CHECKS ------------------------------------
 
-//		VAR			TYPE	OPTIONAL FLAGS	VALIDATION	EXCEPTION
-	$fields = array(
-		'msg'=>			array(T_ZBX_STR, O_OPT,	 null,	null ,NULL),
+//		VAR 				array(TYPE, OPTIONAL, FLAGS, VALIDATION, EXCEPTION)
+$fields = array(
+		'msg'=>				array(T_ZBX_STR, O_OPT,	 null, null, NULL),
 // ajax
-        	'favobj'=>              array(T_ZBX_STR, O_OPT, P_ACT,  NULL,           NULL),
-                'favref'=>              array(T_ZBX_STR, O_OPT, P_ACT,  NOT_EMPTY,      'isset({favobj})'),
-                'favstate'=>    	array(T_ZBX_INT, O_OPT, P_ACT,  NOT_EMPTY,      'isset({favobj})&&("filter"=={favobj})'),
+		'favobj'=>			array(T_ZBX_STR, O_OPT, P_ACT, NULL, NULL),
+		'favref'=>			array(T_ZBX_STR, O_OPT, P_ACT, NOT_EMPTY, 'isset({favobj})'),
+		'favstate'=>    	array(T_ZBX_INT, O_OPT, P_ACT, NOT_EMPTY, 'isset({favobj})&&("filter"=={favobj})'),
 
 //action
-		'select'=> 		array(T_ZBX_INT, O_OPT, NULL,	NULL,		NULL),
-		'save'=> 		array(T_ZBX_INT, O_OPT, NULL,	NULL,		NULL),
-		'viewtype'=> 		array(T_ZBX_INT, O_OPT, NULL,	NULL,		NULL),
-		'oid' => 		array(T_ZBX_STR, O_OPT, NULL,	NULL,		NULL),
-		'oids' => 		array(T_ZBX_STR, O_OPT, NULL,	NULL,		NULL),
-		'idx' => 		array(T_ZBX_STR, O_OPT, NULL,	NULL,		NULL),
-		'mib' => 		array(T_ZBX_STR, O_OPT, NULL,	NULL,		NULL),
-		'templateid' =>		array(T_ZBX_INT, O_OPT, NULL,	NULL,		NULL),
-		'server_ip' => 		array(T_ZBX_STR, O_OPT, NULL,	NULL,		NULL),
-		'server_port' =>	array(T_ZBX_STR, O_OPT, NULL,	BETWEEN(1,65535),	NULL),
-		'community' => 		array(T_ZBX_STR, O_OPT, NULL,	NULL,		NULL),
-		'snmp_version' =>	array(T_ZBX_INT, O_OPT, NULL,	NULL,		NULL),
-		'history' =>            array(T_ZBX_INT, O_OPT, null,  BETWEEN(0,65535),'isset({save})'),
-		'trends' =>             array(T_ZBX_INT, O_OPT, null,  BETWEEN(0,65535),'isset({save})'),
-                'delay' =>              array(T_ZBX_INT, O_OPT, null,  BETWEEN(1,86400),'isset({save})'),
-                'graph_create' =>       array(T_ZBX_STR, O_OPT, null,  NULL,		'isset({save})'),
-                'graph_name' =>		array(T_ZBX_STR, O_OPT, null,  NULL,		'isset({save})'),
-                'graph_width' =>	array(T_ZBX_INT, O_OPT, NULL,  BETWEEN(20,65535),'isset({save})'),
-                'graph_height' =>	array(T_ZBX_INT, O_OPT, NULL,  BETWEEN(20,65535),'isset({save})'),
-                'graph_type' =>		array(T_ZBX_INT, O_OPT, NULL,  IN('0,1,2,3'),	'isset({save})'),
-                'graph_func' =>		array(T_ZBX_INT, O_OPT, NULL,  IN('1,2,4,7'),	'isset({save})'),
-                'draw_type' =>		array(T_ZBX_INT, O_OPT, NULL,  IN('0,1,2,3,4,5,6'),'isset({save})'),
-                'yaxisside' =>		array(T_ZBX_INT, O_OPT, NULL,  IN('0,1'),'isset({save})'),
+		'select'=> 			array(T_ZBX_INT, O_OPT, NULL, NULL, NULL),
+		'save'=> 			array(T_ZBX_INT, O_OPT, NULL, NULL, NULL),
+		'viewtype'=> 		array(T_ZBX_INT, O_OPT, NULL, NULL, NULL),
+		'oid' => 			array(T_ZBX_STR, O_OPT, NULL, NULL, NULL),
+		'oids' => 			array(T_ZBX_STR, O_OPT, NULL, NULL, NULL),
+		'idx' => 			array(T_ZBX_STR, O_OPT, NULL, NULL, NULL),
+		'mib' => 			array(T_ZBX_STR, O_OPT, NULL, NULL, NULL),
+		'templateid' =>		array(T_ZBX_STR, O_OPT, NULL, NULL, NULL),
+		'server_ip' => 		array(T_ZBX_STR, O_OPT, NULL, NULL, NULL),
+		'server_port' =>	array(T_ZBX_STR, O_OPT, NULL, BETWEEN(1,65535),	NULL),
+		'community' => 		array(T_ZBX_STR, O_OPT, NULL, NULL, NULL),
+		'snmp_version' =>	array(T_ZBX_INT, O_OPT, NULL, NULL, NULL),
+		'history' =>		array(T_ZBX_INT, O_OPT, null, BETWEEN(0,65535), 'isset({save})'),
+		'trends' =>			array(T_ZBX_INT, O_OPT, null, BETWEEN(0,65535), 'isset({save})'),
+		'delay' =>			array(T_ZBX_INT, O_OPT, null, BETWEEN(1,86400), 'isset({save})'),
+		'graph_create' =>	array(T_ZBX_STR, O_OPT, null, NULL, 'isset({save})'),
+		'graph_name' =>		array(T_ZBX_STR, O_OPT, null, NULL,	'isset({save})'),
+		'graph_width' =>	array(T_ZBX_INT, O_OPT, NULL, BETWEEN(20,65535), 'isset({save})'),
+		'graph_height' =>	array(T_ZBX_INT, O_OPT, NULL, BETWEEN(20,65535), 'isset({save})'),
+		'graph_type' =>		array(T_ZBX_INT, O_OPT, NULL, IN('0,1,2,3'), 'isset({save})'),
+		'graph_func' =>		array(T_ZBX_INT, O_OPT, NULL, IN('1,2,4,7'), 'isset({save})'),
+		'draw_type' =>		array(T_ZBX_INT, O_OPT, NULL, IN('0,1,2,3,4,5,6'), 'isset({save})'),
+		'yaxisside' =>		array(T_ZBX_INT, O_OPT, NULL, IN('0,1'), 'isset({save})'),
 // import
-		'form' => 		array(T_ZBX_STR, O_OPT, P_SYS, NULL, NULL),
-		'import' =>             array(T_ZBX_STR, O_OPT, P_SYS|P_ACT, null,              null),
-	);
+		'form' => 			array(T_ZBX_STR, O_OPT, P_SYS, NULL, NULL),
+		'import' =>			array(T_ZBX_STR, O_OPT, P_SYS|P_ACT, null, null),
+);
 
 	check_fields($fields);
 
@@ -284,7 +283,7 @@ ini_set("upload_tmp_dir", "/tmp");
 //		}
 		
 		$json = new CJSON();
-		echo $json->encode(array('info' => $content, 'value' => $value));
+		echo json_encode(array('info' => $content, 'value' => $value));
 		exit;
 	}
 	else if (isset($_REQUEST['save'])) {
@@ -311,8 +310,7 @@ ini_set("upload_tmp_dir", "/tmp");
 			error(_s('Warning. Incorrect value for field "%1$s"', '[snmp_version]'));
 		}
 
-		$json = new CJSON;
-		$oidlist = $json->decode($oids);
+		$oidlist = json_decode($oids, true);
 		if (count($oidlist) === 0) {
 			error(_('OID list is null'));
 		}
@@ -330,7 +328,7 @@ ini_set("upload_tmp_dir", "/tmp");
 			$oid_num = get_oid_from_name(escapeshellcmd($oid[0]));
 			if (!$oid_num)
 				error(_s('OID is null "%1$s"', $oid[0]));
-			
+
 			//value_type	
 			switch($oid[2])
 			{
@@ -346,7 +344,7 @@ ini_set("upload_tmp_dir", "/tmp");
 				default:
 					error(_s('Invalid type "%1$s"', $oid[1]));
 			}
-			
+		
 			//data_type
 			switch($oid[3])
 			{
@@ -380,56 +378,56 @@ ini_set("upload_tmp_dir", "/tmp");
 			// From 1.8.1 zabbix does not accept special char in key, :( so we must replace them with underscore
 			$newkey = preg_replace('/[^0-9a-zA-Z_\.]/','_',$oid[0]);
 			$item = array(
-				'name'		=> $oid[1],
-				'key_'			=> $newkey,
-				'hostid'		=> $templateid,
-				'delay'			=> $delay,
-				'history'		=> $history,
-				'status'		=> ITEM_STATUS_ACTIVE,
-				'type'			=> $snmp_version,
-				'snmp_community'	=> $community,
-				'snmp_oid'		=> $oid_num,
-				'value_type'		=> $value_type,
-				'trapper_hosts'		=> null,
-				'snmp_port'		=> $server_port,
-				'units'			=> $units,
-				'multiplier'		=> $multiplier,
-				'delta'			=> $delta,
+				'name'					=> $oid[1],
+				'key_'					=> $newkey,
+				'hostid'				=> $templateid,
+				'delay'					=> $delay,
+				'history'				=> $history,
+				'status'				=> ITEM_STATUS_ACTIVE,
+				'type'					=> $snmp_version,
+				'snmp_community'		=> $community,
+				'snmp_oid'				=> $oid_num,
+				'value_type'			=> $value_type,
+				'trapper_hosts'			=> null,
+				'snmp_port'				=> $server_port,
+				'units'					=> $units,
+				'multiplier'			=> $multiplier,
+				'delta'					=> $delta,
 				'snmpv3_securityname'	=> null,
 				'snmpv3_securitylevel'	=> null,
 				'snmpv3_authpassphrase'	=> null,
 				'snmpv3_privpassphrase'	=> null,
-				'formula'		=> $formula,
-				'trends'		=> $trends,
-				'logtimefmt'		=> null,
-				'valuemapid'		=> null,
-				'delay_flex'		=> null,
-				'authtype'		=> null,
-				'username'		=> null,
-				'password'		=> null,
-				'publickey'		=> null,
-				'privatekey'		=> null,
-				'params'		=> null,
-				'ipmi_sensor'		=> null,
-				'data_type'		=> $data_type
+				'formula'				=> $formula,
+				'trends'				=> $trends,
+				'logtimefmt'			=> null,
+				'valuemapid'			=> null,
+				'delay_flex'			=> null,
+				'authtype'				=> null,
+				'username'				=> null,
+				'password'				=> null,
+				'publickey'				=> null,
+				'privatekey'			=> null,
+				'params'				=> null,
+				'ipmi_sensor'			=> null,
+				'data_type'				=> $data_type
 			);
+
 			array_push($items, $item);
 		}
-		
+
 		DBstart();
-		$result = API::Item()->create($items);
+		$result = DBend(API::Item()->create($items));		
 		show_messages($result, _('Item added'), _('Cannot add item'));
-		$result = DBend($result);
 		$itemids = array();
 		if ($result) {
 			$itemids = $result['itemids'];
 		}
-		
+
 		// Create graphs
 		if ($graph_create) {
-			createGraph($itemids, $graph_name, $graph_width, $graph_height, 
-				    $graph_type, $graph_func, $draw_type, $yaxisside);
+			createGraph($itemids, $graph_name, $graph_width, $graph_height, $graph_type, $graph_func, $draw_type, $yaxisside);
 		}
+	
 	}
 	else{
 // Build widget
@@ -679,7 +677,7 @@ ini_set("upload_tmp_dir", "/tmp");
 	$action_w= new CWidget();
 	$action_w->setClass('header');
 	
-	$action_w->addHeader(array(new CButton('save',_('Save'),'javascript: onSaveItems()'), SPACE, new CButton('clear',_('Clear'),'javascript: onClearItems()')));
+	$action_w->addHeader(array(new CButton('save',_('Save'),'onSaveItems()'), SPACE, new CButton('clear',_('Clear'),'onClearItems()')));
 	$right_tab->addRow($empty_row);
 	$right_tab->addRow($action_w);
 	
@@ -745,7 +743,7 @@ ini_set("upload_tmp_dir", "/tmp");
 					
 					}).bind("select_node.jstree", function(e, data) {
 						var selectedObj = data.rslt.obj;
-						clickTree(selectedObj.attr("id"), 0, null, ["'._('OID Name').'", "'._('Type of information').'", "'._('Value').'"]);
+						clickTree(selectedObj.attr("id"), 0, null, ["'._('OID Name').'", "'._('Type of information').'", "'._('Value').'"]);					
 					});
 				});
 		');
@@ -951,14 +949,14 @@ function get_templates()
 			'sortfield' => 'name',
 			'sortorder' => ZBX_SORT_UP,
 			'output' => API_OUTPUT_EXTEND,
-			'selectTemplates' => array('hostid', 'name'),
+			'selectTemplates' => array('templateid', 'name'),
 			'nopermissions' => 1
 		);
 	$template = array();
 	$template_list = API::Template()->get($options);
 	foreach ($template_list as $tnum => $temp)
 	{
-		array_push($template, array('key' => $temp['hostid'], 'host' => $temp['name']));
+		array_push($template, array('key' => $temp['templateid'], 'host' => $temp['name']));
 	}
 	
 	return $template;

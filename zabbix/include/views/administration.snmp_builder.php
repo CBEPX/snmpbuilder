@@ -33,7 +33,7 @@ $mibTab->addTab('mibTab', _('Import').' '._('MIB'), $mibFormList);
 
 // append buttons
 $mibForm->addItem($mibTab);
-$mibForm->addItem(makeFormFooter(array(new CSubmit('import', _('Import'))), new CButtonCancel()));
+$mibForm->addItem(makeFormFooter(new CSubmit('import', _('Import')),new CButtonCancel()));
 
 return $mibForm;
 ?>

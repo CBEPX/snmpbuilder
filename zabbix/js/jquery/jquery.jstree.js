@@ -1410,6 +1410,7 @@
  * jsTree themes plugin
  * Handles loading and setting themes, as well as detecting path to themes, etc.
  */
+
 (function ($) {
 	var themes_loaded = [];
 	// this variable stores the path to the themes folder - if left as false - it will be autodetected
