@@ -3,4 +3,4 @@ SNMPbuilder is an addon for zabbix to help users use SNMP OIDS as zabbix items (
 Version 2.2.6
 Known Issues: Create graph does not work.
 
-More information can be found in the [wiki!](https://github.com/KakersUK/snmpbuilder/wiki)
+More information can be found on the wiki! https://github.com/KakersUK/snmpbuilder/wiki
