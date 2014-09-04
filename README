@@ -1,10 +1,10 @@
+Status: Updating for 2.2.6
+Known Issues: Items not being saved to template.
+
 Snmpbuilder is an addon for zabbix to help users use SNMP OIDS as zabbix items (data sources)
 
-
-This tool was originaly written by giapnguyen
-( see https://github.com/giapnguyen/snmpbuilder)
-Later Sire adopted it for zabbix-2.0.0
-I've made some minor changes and installed it on zabbox-2.0.2
+This tool was originaly written by giapnguyen (see https://github.com/giapnguyen/snmpbuilder)
+Later Sire adopted it for zabbix-2.0.0 and atimonin for zabbox-2.0.5
 
 from original README (from giapnguen):
 
@@ -20,60 +20,10 @@ from original README (from giapnguen):
 	informations, automatically convert into Zabbix items and insert them
 	into a template.
 
-Installation
+Installation:
 
-Prerequisits: install snmp packet from your repo
-Now let's go. I'm a bit ubuntu-centric, so please read carefully and make changes sutable for you.
-(i'll mark all comments with '#', so you may copy-paste all to terminal or script):
------------------
-#1. download tar.gz file from github to your favorite directory
-#	also name tar file $dist_name
-# you may download by browser pointing to http://github.com/atimonin/snmpbuilder/tarball/master, or
-wget --content-disposition http://github.com/atimonin/snmpbuilder/tarball/master
-
-#2. Define some variables:
-# Zabbix frontend document-root
-# 	(for ubuntu it is /var/www/zabbix):
-zabbix_frontend=/var/www/zabbix
-# Your favorite directory for downloads (your current dir for ex.)
-your_src=$PWD
-# Downloaded tar filename (also directory later)
-distname=`basename atimonin-snmpbuilder-* .tar.gz`
-#
-#
-#3. untar needed files
-tar xvzf $distname.tar.gz
-
-#4. become an apache user (www-data for ubuntu, if not, you may see it from
-#	ps aux|grep apache), it'll ask you for your password if you have appropriate permissions
-sudo -s -u www-data <<END_OF_SCRIPT
-
-#5. install images for snmpbuilder in zabbix frontend root directory
-
-cd $zabbix_frontend
-tar xvzf $your_src/$distname/snmpbuilder-2.0_imgs.tar.gz
-
-#6. patch zabbix frontend
-patch -p1 < $your_src/$distname/snmpbuilder-2.0.patch
-
-#7. copy snmpbuilder files to frontend dir
-cp -r $your_src/$distname/zabbix/* .
-
-#8. if you need russian translation (if not, skip this step)
-#	patch .po file and rebuild .mo
-patch -p1 < $your_src/snmpbuilder-for-2.0.2/snmpbuilder-2.0-ru.patch
-cd locale
-./make_mo.sh
-
-#9. All done, you are again you, exit from sudo
-END_OF_SCRIPT
------------------
-
-Now restart apache: 
-sudo service apache2 restart
- or
-sudo /etc/init.d/apache2 restart
-
+Prerequisits: install snmp packet from your repo (RHEL: yum install net-snmp-utils)
+Copy contents of zabbix folder into your web zabbix folder.
 
 How to use:
 
