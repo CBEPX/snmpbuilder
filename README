@@ -1,49 +1,6 @@
-Status: Updating for 2.2.6
-Known Issues: Items not being saved to template.
+SNMPbuilder is an addon for zabbix to help users use SNMP OIDS as zabbix items (data sources).
 
-Snmpbuilder is an addon for zabbix to help users use SNMP OIDS as zabbix items (data sources)
+Version 2.2.6
+Known Issues: Create graph does not work.
 
-This tool was originaly written by giapnguyen (see https://github.com/giapnguyen/snmpbuilder)
-Later Sire adopted it for zabbix-2.0.0 and atimonin for zabbox-2.0.5
-
-from original README (from giapnguen):
-
-	I write the tool because I'm tired in create SNMP items for zabbix.
-	To create a useful zabbix's template for SNMP devices, I used to open a MIB
-	browser to get correct OID then fill the zabbix's item forms.
-	It'm so boring when create a long list of items :-( .
-	There is a first attempt of work out this problem, zload_snmpwalk
-	http://zabbix.com/wiki/howto/monitor/snmp/zload_snmpwalk.
-	But I rather a GUI tool. So why just make one?
-
-	SNMP builder is a add-in for Zabbix. It provide browse MIB for values and
-	informations, automatically convert into Zabbix items and insert them
-	into a template.
-
-Installation:
-
-Prerequisits: install snmp packet from your repo (RHEL: yum install net-snmp-utils)
-Copy contents of zabbix folder into your web zabbix folder.
-
-How to use:
-
-In configuration mode yow should have "SNMP Builder" submenu, go there
-
-Fill in: Host (ip address), Community.
-Select MIB from dropdown list (for ex IF-MIB).
-You should see MIB subtree on the left.
-Click some leaf or table in subthee (for ex ifTable or sysUpTime).
-Now you shoud see SNMP data in "OID Data" table and some description
- in "Information" window.
-Select the data you need in "OID Data" table, you'll see it's added as zabbix
- item in "Item list" table. You may select multiple. To remove item click on it in
- "Item list"
-To save items, select template from dropdown list and click save.
-You may also check "Create graph" checkbox to add grafs of all items you selected.
-
-Happy SNMPing!
-
-
-
-
-
+More information can be found in the [wiki!](https://github.com/KakersUK/snmpbuilder/wiki)
