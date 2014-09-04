@@ -283,7 +283,7 @@ $fields = array(
 //		}
 		
 		$json = new CJSON();
-		echo json_encode(array('info' => $content, 'value' => $value));
+		echo $json->encode(array('info' => $content, 'value' => $value));
 		exit;
 	}
 	else if (isset($_REQUEST['save'])) {
@@ -310,7 +310,8 @@ $fields = array(
 			error(_s('Warning. Incorrect value for field "%1$s"', '[snmp_version]'));
 		}
 
-		$oidlist = json_decode($oids, true);
+		$json = new CJSON;
+		$oidlist = $json->decode($oids);
 		if (count($oidlist) === 0) {
 			error(_('OID list is null'));
 		}
@@ -416,8 +417,9 @@ $fields = array(
 		}
 
 		DBstart();
-		$result = DBend(API::Item()->create($items));		
+		$result = API::Item()->create($items);		
 		show_messages($result, _('Item added'), _('Cannot add item'));
+		$result = DBend($result);
 		$itemids = array();
 		if ($result) {
 			$itemids = $result['itemids'];

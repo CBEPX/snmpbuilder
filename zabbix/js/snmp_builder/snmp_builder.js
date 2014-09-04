@@ -147,9 +147,6 @@ function onClickOid(e)
 {
 	var row = this.data[0];
 	var item = convertOid(row[0],row[1]);
-
-	console.log(row);
-	console.log(item);
 	//if (item)
 	{
 		itemlist.appendData(item);
@@ -328,25 +325,7 @@ function onSaveItems(e)
 	var yaxisside = $F($('yaxisside'));
 
 	var server_port = server_ip.match(/\d+$/); //FIXME?
-	if (!server_port) server_port = 161;
-
-	// DEBUG
-	//console.log (server_ip);
-	//console.log (templateid);
-	//console.log (snmp_version);
-	//console.log (community);
-	//console.log (history);
-	//console.log (trends);	
-	//console.log (delay);
-	//console.log (trends);		
-	//console.log (graph_create);
-	//console.log (graph_name);
-	//console.log (graph_width);
-	//console.log (graph_height);
-	//console.log (graph_type);
-	//console.log (graph_func);
-	//console.log (draw_type);
-	//console.log (yaxisside);						
+	if (!server_port) server_port = 161;				
 
 	if (itemlist.data.size() === 0)
 		return;
